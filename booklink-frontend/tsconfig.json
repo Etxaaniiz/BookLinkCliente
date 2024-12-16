@@ -1,9 +1,26 @@
 {
-    "compilerOptions": {
-      "jsx": "react-jsx",
-      "baseUrl": "./src",
-      "paths": {
-        "*": ["*"]
-      }
-    }
-  }
+  "compilerOptions": {
+    "jsx": "preserve",
+    "baseUrl": "./src",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "target": "es6",
+    "module": "esnext",
+    "strict": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "allowJs": true,
+    "isolatedModules": true,
+    "noEmit": true
+  },
+  "include": [
+    "src"
+  ]
+}

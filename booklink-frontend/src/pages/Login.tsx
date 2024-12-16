@@ -1,8 +1,8 @@
 import { useState } from "react";
-//import { Button } from "@/components/ui/button";
-//import { Input } from "@/components/ui/input";
-//import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-//import { Label } from "@/components/ui/label";
+import { Button } from "../components/botton";
+import { Input } from "../components/input";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/card";
+import { Label } from "../components/label";
 import { BookOpen } from "lucide-react";
 import { loginUser } from "../services/api"; // Importamos la API
 import { useNavigate } from "react-router-dom"; // Para redirigir
