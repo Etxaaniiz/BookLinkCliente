@@ -1,9 +1,13 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:4001/api";
 
 export const registerUser = async (data: { username: string; email: string; password: string }) => {
-    return axios.post(`${API_BASE_URL}/users/register`, data);
+    return axios.post(`${API_BASE_URL}/users/register`, data, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
 };
 
 export const loginUser = async (data: { email: string; password: string }) => {

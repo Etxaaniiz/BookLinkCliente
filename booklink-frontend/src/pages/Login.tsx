@@ -4,8 +4,8 @@ import { Input } from "../components/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/card";
 import { Label } from "../components/label";
 import { BookOpen } from "lucide-react";
-import { loginUser } from "../services/api"; // Importamos la API
-import { useNavigate } from "react-router-dom"; // Para redirigir
+import { loginUser } from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -16,8 +16,8 @@ export default function Login() {
   const handleLogin = async () => {
     try {
       const response = await loginUser({ email, password });
-      localStorage.setItem("token", response.data.token); // Guardamos el token en el localStorage
-      navigate("/home"); // Redirigimos a la pantalla principal
+      localStorage.setItem("token", response.data.token); // Guardar el token en localStorage
+      navigate("/home"); // Redirigir al usuario a la pantalla principal
     } catch (err) {
       setError("Credenciales inválidas. Intenta de nuevo.");
     }
@@ -41,7 +41,7 @@ export default function Login() {
               placeholder="tu@email.com"
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)} // Vinculamos al estado
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="space-y-2">
@@ -50,16 +50,13 @@ export default function Login() {
               id="password"
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)} // Vinculamos al estado
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          {error && <p className="text-red-500 text-sm">{error}</p>} {/* Mostramos errores */}
+          {error && <p className="text-red-500 text-sm">{error}</p>}
         </CardContent>
         <CardFooter className="flex flex-col space-y-4">
-          <Button
-            className="w-full bg-blue-600 hover:bg-blue-700"
-            onClick={handleLogin} // Llamamos al manejador de login
-          >
+          <Button className="w-full bg-blue-600 hover:bg-blue-700" onClick={handleLogin}>
             Iniciar sesión
           </Button>
           <div className="text-sm text-center">
