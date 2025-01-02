@@ -15,7 +15,7 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/home" element={<HomeInitial />} />
                 <Route path="/search" element={<HomeSearch />} />
-                <Route path="/details" element={<Details />} />
+                <Route path="/details/:id" element={<Details />} />
                 <Route path="/favorites" element={<Favorites />} />
             </Routes>
         </Router>

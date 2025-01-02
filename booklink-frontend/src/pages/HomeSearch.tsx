@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Button } from "../components/botton";
 import { Input } from "../components/input";
 import { Card, CardContent } from "../components/card";
 import { Search } from "lucide-react";
-import { searchBooks } from "../services/api"; // Importar función de la API
+import { searchBooks } from "../services/api";
 
 type Book = {
   id: string;
@@ -17,14 +18,23 @@ type Book = {
 };
 
 export default function HomeSearch() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [books, setBooks] = useState<Book[]>([]); // Array de libros con tipo Book
+  const [searchParams] = useSearchParams();
+  const initialSearchTerm = searchParams.get("query") || "";
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+  const [books, setBooks] = useState<Book[]>([]);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (searchTerm.trim()) {
+      handleSearch();
+    }
+  }, [searchTerm]);
 
   const handleSearch = async () => {
     try {
       const response = await searchBooks(searchTerm);
-      setBooks(response.data.items || []); // Asegúrate de que la API devuelve items
+      setBooks(response.data.items || []);
+      setError("");
     } catch (err) {
       setError("Error al buscar libros. Intenta nuevamente.");
     }
@@ -32,11 +42,9 @@ export default function HomeSearch() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Search Section */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-3xl font-bold text-blue-800 mb-6">Buscar Libros</h1>
 
-        {/* Search Input */}
         <div className="mb-6">
           <div className="relative max-w-md mx-auto">
             <Input
@@ -56,10 +64,9 @@ export default function HomeSearch() {
           </div>
         </div>
 
-        {/* Results */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {books.map((book) => (
-            <Card key={book.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+            <Card key={book.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
               <CardContent className="p-4">
                 <img
                   src={book.volumeInfo.imageLinks?.thumbnail || "/placeholder.svg"}
@@ -73,7 +80,6 @@ export default function HomeSearch() {
           ))}
         </div>
 
-        {/* No Results */}
         {books.length === 0 && error && <p className="text-center text-gray-500 mt-8">{error}</p>}
       </main>
     </div>

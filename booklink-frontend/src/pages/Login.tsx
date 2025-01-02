@@ -16,8 +16,9 @@ export default function Login() {
   const handleLogin = async () => {
     try {
       const response = await loginUser({ email, password });
-      localStorage.setItem("token", response.data.token); // Guardar el token en localStorage
-      navigate("/home"); // Redirigir al usuario a la pantalla principal
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("username", response.data.username); // Guardar el nombre del usuario
+      navigate("/home");
     } catch (err) {
       setError("Credenciales inválidas. Intenta de nuevo.");
     }

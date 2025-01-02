@@ -2,6 +2,7 @@
   "name": "booklink-frontend",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:4001",
   "dependencies": {
     "@radix-ui/react-collapsible": "^1.1.2",
     "@radix-ui/react-icons": "^1.3.2",
