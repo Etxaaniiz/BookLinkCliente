@@ -4,7 +4,7 @@ import { Input } from "../components/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/card";
 import { Label } from "../components/label";
 import { BookOpen } from "lucide-react";
-import { registerUser } from "../services/api"; // Importamos la API
+import { register } from "../services/api"; // Importamos la API
 import { useNavigate } from "react-router-dom"; // Para redirigir
 
 export default function Register() {
@@ -23,7 +23,7 @@ export default function Register() {
     }
 
     try {
-      await registerUser({ username: name, email, password });
+      await register(name, email, password);
       setSuccess("Registro exitoso. Redirigiendo...");
       setTimeout(() => {
         navigate("/"); // Redirige al login

@@ -22,7 +22,7 @@ type RecommendedBook = {
 };
 
 // Lista de categorías para variar la búsqueda
-const bookCategories = ["fiction", "history", "science", "fantasy", "mystery", "romance", "biography", "self-help"];
+const bookCategories = ["ficcion", "historia", "ciencia", "fantasy", "misterio", "romance", "biografia", "deporte"];
 
 export default function HomeInitial() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -91,7 +91,7 @@ export default function HomeInitial() {
           <div className="relative max-w-2xl mx-auto">
             <Input
               type="text"
-              placeholder="Busca por título, autor o género..."
+              placeholder="Busca por título"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10 pr-4 py-2 w-full border-2 border-blue-300 focus:border-blue-500 rounded-full"

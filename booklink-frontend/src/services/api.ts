@@ -1,17 +1,36 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:4001/api";
+const API_BASE_URL = "http://localhost:4001";
 
-export const registerUser = async (data: { username: string; email: string; password: string }) => {
-    return axios.post(`${API_BASE_URL}/users/register`, data, {
-        headers: {
-            'Content-Type': 'application/json'
-        }
+// **🔹 Función para iniciar sesión**
+export const login = async (email: string, password: string) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/auth/login`, {
+      email,
+      password,
     });
+
+    return response.data;
+  } catch (error: any) {
+    console.error("Error en login:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.error || "Error al iniciar sesión");
+  }
 };
 
-export const loginUser = async (data: { email: string; password: string }) => {
-    return axios.post(`${API_BASE_URL}/users/login`, data);
+// **🔹 Función para registrar un usuario**
+export const register = async (username: string, email: string, password: string) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/auth/register`, {
+      username,
+      email,
+      password,
+    });
+
+    return response.data;
+  } catch (error: any) {
+    console.error("Error en register:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.error || "Error al registrar");
+  }
 };
 
 export const searchBooks = async (query: string) => {
@@ -67,6 +86,6 @@ export const getFavorites = async (token: string) => {
 
 
   export const getBookDetails = async (bookId: string) => {
-    return axios.get(`http://localhost:4001/api/details/${bookId}`);
+    return axios.get(`http://localhost:4001/details/${bookId}`);
   };
   

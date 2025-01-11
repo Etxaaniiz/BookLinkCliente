@@ -4,7 +4,7 @@ import { Input } from "../components/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/card";
 import { Label } from "../components/label";
 import { BookOpen } from "lucide-react";
-import { loginUser } from "../services/api";
+import { login } from "../services/api";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
@@ -15,9 +15,9 @@ export default function Login() {
 
   const handleLogin = async () => {
     try {
-      const response = await loginUser({ email, password });
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("username", response.data.username); // Guardar el nombre del usuario
+      const response = await login(email, password);
+      localStorage.setItem("token", response.token); 
+      localStorage.setItem("username", response.username);
       navigate("/home");
     } catch (err) {
       setError("Credenciales inválidas. Intenta de nuevo.");

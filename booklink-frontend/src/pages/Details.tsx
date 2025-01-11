@@ -64,34 +64,40 @@ export default function BookDetails() {
   const handleAddFavorite = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
-      setError("Debes iniciar sesión para agregar favoritos.");
-      return;
+        setError("Debes iniciar sesión para agregar favoritos.");
+        return;
     }
-  
+
+    // Extraer correctamente el autor
+    const bookAuthor = book.authors || book.author || 
+        (book.volumeInfo && book.volumeInfo.authors?.length > 0
+            ? book.volumeInfo.authors.join(", ")
+            : "Autor desconocido");
+
     const favoriteData = {
-      book_id: book.id,
-      book_title: book.title,
-      book_author: book.authors?.join(", ") || "Autor desconocido",
-      book_cover: bookImage, // ✅ Asegurar que la imagen se envía correctamente
+        book_id: book.id,
+        book_title: book.title,
+        book_author: bookAuthor,
+        book_cover: book.cover || "/default-placeholder.png",
     };
-  
+
     console.log("📌 Enviando datos a favoritos:", favoriteData);
-  
+
     try {
-      await addFavorite(
-        book.id,
-        book.title,
-        book.authors?.join(", ") || "Autor desconocido",
-        bookImage, // ✅ Se envía correctamente como `book_cover`
-        token
-      );
-  
-      alert("Libro agregado a favoritos.");
+        await addFavorite(
+            book.id,
+            book.title,
+            bookAuthor,
+            book.cover || "/default-placeholder.png",
+            token
+        );
+
+        alert("Libro agregado a favoritos.");
     } catch (err) {
-      console.error("🚨 Error al agregar favorito:", err);
-      setError("No se pudo agregar el libro a favoritos.");
+        console.error("🚨 Error al agregar favorito:", err);
+        setError("No se pudo agregar el libro a favoritos.");
     }
-  };
+};
   
 
   return (

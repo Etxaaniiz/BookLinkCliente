@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "../components/botton";
-import { Input } from "../components/input";
 import { Card, CardContent } from "../components/card";
-import { Search, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { searchBooks } from "../services/api";
 
 type Book = {
@@ -23,18 +22,13 @@ type Book = {
 export default function HomeSearch() {
   const [searchParams] = useSearchParams();
   const initialSearchTerm = searchParams.get("query") || "";
-  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+  const [searchTerm] = useState(initialSearchTerm);
   const [books, setBooks] = useState<Book[]>([]);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (searchTerm.trim()) {
-      handleSearch();
-    }
-  }, [searchTerm]);
-
-  const handleSearch = async () => {
+  // 🔹 useCallback evita recrear la función en cada renderización
+  const handleSearch = useCallback(async () => {
     try {
       const response = await searchBooks(searchTerm);
       setBooks(response.data.items || []);
@@ -42,13 +36,20 @@ export default function HomeSearch() {
     } catch (err) {
       setError("Error al buscar libros. Intenta nuevamente.");
     }
-  };
+  }, [searchTerm]);
+
+  useEffect(() => {
+    if (searchTerm.trim()) {
+      handleSearch();
+    }
+  }, [searchTerm, handleSearch]); // 🔹 Agregar handleSearch como dependencia evita warnings
 
   const handleBookClick = (bookId: string) => {
     navigate(`/details/${bookId}`);
   };
 
-  const getBestImage = (imageLinks: any) => {
+  // 🔹 Definir el tipo correcto para evitar `any`
+  const getBestImage = (imageLinks: Book["volumeInfo"]["imageLinks"]) => {
     return (
       imageLinks?.large ||
       imageLinks?.medium ||
@@ -60,7 +61,6 @@ export default function HomeSearch() {
   return (
     <div className="min-h-screen bg-gray-100">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Botón de Volver */}
         <Button variant="ghost" className="mb-6 text-blue-600 hover:text-blue-800" onClick={() => navigate(-1)}>
           <ArrowLeft className="mr-2 h-4 w-4" />
           Volver

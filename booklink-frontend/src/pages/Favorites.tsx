@@ -32,13 +32,12 @@ export default function Favorites() {
         }
         const response = await getFavorites(token);
         setFavorites(response.data);
-        console.log("Favoritos cargados: ", response.data);
       } catch (err) {
         console.error("Error al cargar favoritos: ", err);
         setError("No se pudieron cargar tus favoritos.");
       }
     };
-
+  
     fetchFavorites();
   }, []);
 
@@ -47,13 +46,14 @@ export default function Favorites() {
     if (!token) return;
 
     try {
+      console.log(`🗑️ Intentando eliminar favorito con ID: ${id}`); // ✅ Depuración
       await removeFavorite(id, token);
       setFavorites(favorites.filter((book) => book.id !== id));
     } catch (err) {
       console.error("Error al eliminar favorito: ", err);
       setError("No se pudo eliminar el favorito.");
     }
-  };
+};
 
   const handleBookClick = (bookId: string) => {
     navigate(`/details/${bookId}`);
