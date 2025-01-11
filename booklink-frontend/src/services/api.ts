@@ -15,10 +15,17 @@ export const loginUser = async (data: { email: string; password: string }) => {
 };
 
 export const searchBooks = async (query: string) => {
-    return axios.get(`${API_BASE_URL}/books`, {
-      params: { query },
-    });
-  };
+  const API_URL = "https://www.googleapis.com/books/v1/volumes";
+  const API_KEY = "AIzaSyAs4xPXFePLyynLI3Roofin7coABYiZoXE";
+  return axios.get(`${API_URL}`, {
+    params: {
+      q: query,
+      maxResults: 12,
+      key: API_KEY,
+    },
+  });
+};
+
 
 
 export const getFavorites = async (token: string) => {
@@ -37,21 +44,27 @@ export const getFavorites = async (token: string) => {
     });
   };
 
-  export const addFavorite = async (book: { id: string; title: string; author?: string }, token: string) => {
+  export const addFavorite = async (
+    bookId: string,
+    title: string,
+    author: string,
+    cover: string,
+    token: string
+  ) => {
     return axios.post(
       `${API_BASE_URL}/favorites`,
       {
-        book_id: book.id,
-        book_title: book.title,
-        book_author: book.author || "Autor desconocido",
+        book_id: bookId,
+        book_title: title,
+        book_author: author,
+        book_cover: cover,
       },
       {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       }
     );
   };
+
 
   export const getBookDetails = async (bookId: string) => {
     return axios.get(`http://localhost:4001/api/details/${bookId}`);
