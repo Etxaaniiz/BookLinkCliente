@@ -68,34 +68,34 @@ export default function BookDetails() {
         return;
     }
 
-    // Extraer correctamente el autor
-    const bookAuthor = book.authors || book.author || 
-        (book.volumeInfo && book.volumeInfo.authors?.length > 0
-            ? book.volumeInfo.authors.join(", ")
-            : "Autor desconocido");
+    // 🚨 Evitar doble envío si ya está procesando
+    if (loading) return;
+    setLoading(true);
 
     const favoriteData = {
         book_id: book.id,
         book_title: book.title,
-        book_author: bookAuthor,
+        book_author: book.author,
         book_cover: book.cover || "/default-placeholder.png",
     };
 
     console.log("📌 Enviando datos a favoritos:", favoriteData);
 
     try {
-        await addFavorite(
-            book.id,
-            book.title,
-            bookAuthor,
-            book.cover || "/default-placeholder.png",
-            token
+        const response = await addFavorite(
+            book.id, book.title, book.author, book.cover || "/default-placeholder.png", token
         );
 
-        alert("Libro agregado a favoritos.");
+        if (response.status === 201) {
+            alert("Libro agregado a favoritos.");
+        } else {
+            alert("El libro ya está en favoritos o hubo un error.");
+        }
     } catch (err) {
         console.error("🚨 Error al agregar favorito:", err);
         setError("No se pudo agregar el libro a favoritos.");
+    } finally {
+        setLoading(false);
     }
 };
   
